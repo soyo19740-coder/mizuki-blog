@@ -35,13 +35,6 @@ jobs:
           version: 11.5.3
           run_install: false
 
-      - name: Enable Corepack and show versions
-        run: |
-          corepack enable
-          node --version
-          pnpm --version
-          npm --version
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
