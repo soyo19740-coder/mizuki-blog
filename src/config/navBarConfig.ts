@@ -147,6 +147,16 @@ export const navBarConfig: NavBarConfig = {
 			icon: "material-symbols:more-horiz",
 			children: [
 				{
+					name: "日记",
+					url: "/diary/",
+					icon: "material-symbols:book",
+				},
+				{
+					name: "相册",
+					url: "/albums/",
+					icon: "material-symbols:photo-library",
+				},
+				{
 					name: "RSS",
 					url: "/rss.xml",
 					icon: "material-symbols:rss-feed",
