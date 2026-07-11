@@ -75,7 +75,7 @@ export default defineConfig({
 	],
 
 	site: siteConfig.siteURL,
-	base: "/",
+	base: "/mizuki-blog/",
 	trailingSlash: "always",
 	compressHTML: true,
 
