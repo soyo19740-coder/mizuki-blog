@@ -156,11 +156,6 @@ export const navBarConfig: NavBarConfig = {
 					url: "/albums/",
 					icon: "material-symbols:photo-library",
 				},
-				{
-					name: "RSS",
-					url: "/rss.xml",
-					icon: "material-symbols:rss-feed",
-				},
 			],
 		},
 	],
