@@ -109,7 +109,6 @@ const favicons: Favicon[] =
 		DARK_MODE,
 		BANNER_HEIGHT_EXTEND: 30,
 		configHue,
-		themeColorFixed: siteConfig.themeColor.fixed ?? false,
 		pageScaling: siteConfig.pageScaling,
 	}}
 >
@@ -135,9 +134,8 @@ const favicons: Favicon[] =
 		document.documentElement.setAttribute("data-theme", expressiveTheme);
 	}
 
-	// Load the hue from local storage
-	const hue = themeColorFixed ? configHue : (localStorage.getItem("hue") || configHue);
-	document.documentElement.style.setProperty("--hue", hue);
+	// Always start from the configured hue; visitors can still adjust it for the current page.
+	document.documentElement.style.setProperty("--hue", configHue);
 
 	// calculate the --banner-height-extend, which needs to be a multiple of 4 to avoid blurry text
 	let offset = Math.floor(window.innerHeight * (BANNER_HEIGHT_EXTEND / 100));

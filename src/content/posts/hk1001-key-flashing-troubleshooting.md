@@ -4,7 +4,7 @@ published: 2026-07-01
 description: 记录 HK1001 Key 烧录工具运行时遇到的 websockets 版本兼容、Python 3.14 事件循环和 Chromium 依赖问题，以及对应的处理方法。
 image: ''
 tags: [HK1001, 烧录, Python, websockets, Chromium]
-category: 开发笔记
+category: 软件笔记
 draft: false
 pinned: false
 comment: true

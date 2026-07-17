@@ -6,7 +6,7 @@ image: ''
 tags: [Astro, GitHub Pages, Markdown, Blog]
 category: 建站
 draft: false
-pinned: true
+pinned: false
 comment: true
 lang: zh-CN
 ---
