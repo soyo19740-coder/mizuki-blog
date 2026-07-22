@@ -4,7 +4,7 @@ published: 2026-07-22T16:16:16+08:00
 description: 记录将 Windows 项目复制到 WSL、使用 ARM GCC 编译 hka302_motor_app、校验并导出 HEX 后在 Windows 烧录的完整流程。
 image: ''
 tags: [Linux, WSL, 嵌入式, 固件编译, 固件烧录]
-category: 软件笔记
+category: LINUX开发
 draft: false
 pinned: false
 comment: true

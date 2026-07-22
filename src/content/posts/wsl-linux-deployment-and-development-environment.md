@@ -4,7 +4,7 @@ published: 2026-07-22T16:16:15+08:00
 description: 记录在 Windows 上部署 WSL 2、Ubuntu 24.04 和 Arm GNU Toolchain 14.2.Rel1，并配置嵌入式项目开发环境的完整过程。
 image: ''
 tags: [WSL, Linux, Ubuntu, ARM GCC, 开发环境]
-category: 软件笔记
+category: LINUX开发
 draft: false
 pinned: false
 comment: true

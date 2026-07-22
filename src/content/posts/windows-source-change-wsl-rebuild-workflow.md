@@ -4,7 +4,7 @@ published: 2026-07-22T17:37:16+08:00
 description: 记录 Windows 修改 hka302_motor_app 源码后，通过 rsync 同步至 WSL、重新编译、校验并导出 HEX 固件的完整操作流程。
 image: ''
 tags: [WSL, Linux, rsync, 嵌入式, 固件编译]
-category: 软件笔记
+category: LINUX开发
 draft: false
 pinned: false
 comment: true
