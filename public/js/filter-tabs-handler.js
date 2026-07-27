@@ -16,11 +16,13 @@
 			if (!filterAttr) return;
 
 			var dataSelector = "[data-" + filterAttr + "]";
-			var parent = container.closest(".card-base") || document;
+			var scopeId = container.dataset.filterScope;
+			var parent =
+				(scopeId && document.getElementById(scopeId)) ||
+				container.closest(".card-base") ||
+				document;
 			var items = parent.querySelectorAll(dataSelector);
 			var noResults = parent.querySelector("#no-results");
-
-			if (items.length === 0) return;
 
 			tabs.forEach(function (tab) {
 				tab.addEventListener("click", function () {

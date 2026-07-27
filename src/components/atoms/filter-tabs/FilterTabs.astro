@@ -11,6 +11,7 @@ interface FilterTab {
 interface Props {
 	tabs: FilterTab[];
 	dataAttr: string;
+	scopeId?: string;
 	activeValue?: string;
 	class?: string;
 }
@@ -18,12 +19,16 @@ interface Props {
 const {
 	tabs,
 	dataAttr,
+	scopeId,
 	activeValue = "all",
 	class: className = "",
 } = Astro.props;
 ---
 
-<div class:list={["filter-tabs", className]}>
+<div
+	class:list={["filter-tabs", className]}
+	data-filter-scope={scopeId}
+>
 	{
 		tabs.map((tab) => (
 			<button

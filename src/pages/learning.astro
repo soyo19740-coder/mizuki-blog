@@ -1,4 +1,5 @@
 ---
+import { FilterTabs } from "@components/atoms/filter-tabs";
 import PostCard from "@components/features/posts/PostCard.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getSortedPosts } from "@utils/content-utils";
@@ -9,6 +10,27 @@ const learningPosts = (await getSortedPosts()).filter(
 	(post) => post.data.category?.trim() === LEARNING_CATEGORY,
 );
 
+const defaultSections = ["LINUX学习", "GIT学习", "其他学习"];
+const discoveredSections = learningPosts.map(
+	(post) => post.data.learningSection?.trim() || "其他学习",
+);
+const sections = [...new Set([...defaultSections, ...discoveredSections])];
+const filterTabs = [
+	{
+		value: "all",
+		label: "全部",
+		icon: "material-symbols:apps",
+		count: learningPosts.length,
+	},
+	...sections.map((section) => ({
+		value: section,
+		label: section,
+		count: learningPosts.filter(
+			(post) => (post.data.learningSection?.trim() || "其他学习") === section,
+		).length,
+	})),
+];
+
 const latestDate = learningPosts.at(0)?.data.published;
 const title = "学习专栏";
 const description = "持续记录每天学到的知识、实践过程与阶段总结。";
@@ -18,6 +40,7 @@ const description = "持续记录每天学到的知识、实践过程与阶段�
 	<script>
 		import("../scripts/right-sidebar-layout.js");
 	</script>
+	<script is:inline src="/js/filter-tabs-handler.js"></script>
 
 	<section class="card-base mb-4 overflow-hidden rounded-(--radius-large)">
 		<div class="flex items-center justify-between gap-5 px-6 py-6 md:px-9 md:py-7">
@@ -54,17 +77,31 @@ const description = "持续记录每天学到的知识、实践过程与阶段�
 				}
 			</div>
 		</div>
+		<div class="border-t border-black/5 px-6 py-4 dark:border-white/10 md:px-9">
+			<FilterTabs
+				tabs={filterTabs}
+				dataAttr="learning-section"
+				scopeId="learning-records"
+			/>
+		</div>
 	</section>
 
-	{
-		learningPosts.length > 0 ? (
+	<div id="learning-records">
+		{
+			learningPosts.length > 0 ? (
 			<div class="flex flex-col gap-4">
 				{learningPosts.map((entry, index) => (
-					<PostCard
-						entry={entry}
-						class="onload-animation"
-						style={`--i: ${index}; --interval: 50ms;`}
-					/>
+					<div
+						class="learning-entry"
+						data-learning-section={entry.data.learningSection?.trim() ||
+							"其他学习"}
+					>
+						<PostCard
+							entry={entry}
+							class="onload-animation"
+							style={`--i: ${index}; --interval: 50ms;`}
+						/>
+					</div>
 				))}
 			</div>
 		) : (
@@ -77,5 +114,28 @@ const description = "持续记录每天学到的知识、实践过程与阶段�
 				<p class="mt-2 text-sm text-50">第一条记录发布后会显示在这里。</p>
 			</section>
 		)
-	}
+		}
+		{
+			learningPosts.length > 0 && (
+				<div
+					id="no-results"
+					class="card-base hidden rounded-(--radius-large) px-6 py-16 text-center"
+				>
+					<Icon
+						name="material-symbols:search-off-rounded"
+						class="mx-auto mb-4 text-6xl text-(--primary) opacity-45"
+					/>
+					<h2 class="text-xl font-semibold text-80">
+						该分区还没有学习记录
+					</h2>
+				</div>
+			)
+		}
+	</div>
 </MainGridLayout>
+
+<style>
+	.learning-entry.filtered-out {
+		display: none;
+	}
+</style>
