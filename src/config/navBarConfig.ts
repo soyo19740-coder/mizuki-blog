@@ -131,6 +131,11 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Home,
 		LinkPreset.Archive,
 		{
+			name: "学习专栏",
+			url: "/learning/",
+			icon: "material-symbols:school-outline",
+		},
+		{
 			name: "关于",
 			url: "/about/",
 			icon: "material-symbols:info",
