@@ -13,7 +13,9 @@ import { initPostIdMap } from "../utils/permalink-utils";
 const showCategoryBar = siteConfig.postListLayout.categoryBar?.enable ?? false;
 
 export const getStaticPaths = (async ({ paginate }) => {
-	const allBlogPosts = await getSortedPosts();
+	const allBlogPosts = (await getSortedPosts()).filter(
+		(post) => post.data.category?.trim() !== "学习记录",
+	);
 	// 初始化文章 ID 映射（用于 permalink 功能）
 	initPostIdMap(allBlogPosts);
 	return paginate(allBlogPosts, { pageSize: PAGE_SIZE });
