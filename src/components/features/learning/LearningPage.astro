@@ -1,0 +1,187 @@
+---
+import PostCard from "@components/features/posts/PostCard.astro";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getSortedPosts } from "@utils/content-utils";
+import { url } from "@utils/url-utils";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	activeSection?: string;
+}
+
+const { activeSection } = Astro.props;
+const LEARNING_CATEGORY = "学习记录";
+const learningPosts = (await getSortedPosts()).filter(
+	(post) => post.data.category?.trim() === LEARNING_CATEGORY,
+);
+const displayPosts = activeSection
+	? learningPosts.filter(
+			(post) =>
+				(post.data.learningSection?.trim() || "其他学习") === activeSection,
+		)
+	: learningPosts;
+
+const sections = [
+	{ label: "全部", path: "/learning/", icon: "material-symbols:apps" },
+	{ label: "LINUX学习", path: "/learning/linux/", section: "LINUX学习" },
+	{ label: "GIT学习", path: "/learning/git/", section: "GIT学习" },
+	{ label: "其他学习", path: "/learning/other/", section: "其他学习" },
+];
+const sectionDescriptions: Record<string, string> = {
+	LINUX学习: "记录 Linux、WSL、命令行与开发环境的学习过程。",
+	GIT学习: "记录 Git、Gerrit 与版本控制的学习过程。",
+	其他学习: "记录其他方向的知识、实践过程与阶段总结。",
+};
+const title = activeSection || "学习专栏";
+const description = activeSection
+	? sectionDescriptions[activeSection] || "持续记录学习过程与阶段总结。"
+	: "持续记录每天学到的知识、实践过程与阶段总结。";
+const latestDate = displayPosts.at(0)?.data.published;
+---
+
+<MainGridLayout title={title} description={description}>
+	<script>
+		import("../../../scripts/right-sidebar-layout.js");
+	</script>
+
+	<section class="card-base mb-4 overflow-hidden rounded-(--radius-large)">
+		<div class="flex items-center justify-between gap-5 px-6 py-6 md:px-9 md:py-7">
+			<div class="flex min-w-0 items-center gap-4">
+				<div
+					class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-(--primary) text-white shadow-sm"
+				>
+					<Icon name="material-symbols:school-outline" class="text-3xl" />
+				</div>
+				<div class="min-w-0">
+					<h1 class="text-2xl font-bold text-90 md:text-3xl">{title}</h1>
+					<p class="mt-1 text-sm text-60 md:text-base">{description}</p>
+				</div>
+			</div>
+
+			<div class="hidden shrink-0 items-center gap-7 text-right sm:flex">
+				<div>
+					<div class="text-2xl font-bold text-(--primary)">{displayPosts.length}</div>
+					<div class="text-xs text-50">学习记录</div>
+				</div>
+				{
+					latestDate && (
+						<div>
+							<div class="text-sm font-semibold text-80">
+								{latestDate.toLocaleDateString("zh-CN", {
+									year: "numeric",
+									month: "2-digit",
+									day: "2-digit",
+								})}
+							</div>
+							<div class="mt-1 text-xs text-50">最近更新</div>
+						</div>
+					)
+				}
+			</div>
+		</div>
+		<nav
+			class="learning-sections border-t border-black/5 px-6 py-4 dark:border-white/10 md:px-9"
+			aria-label="学习专栏分区"
+		>
+			{
+				sections.map((section) => {
+					const isActive = section.section === activeSection;
+					const count = section.section
+						? learningPosts.filter(
+								(post) =>
+									(post.data.learningSection?.trim() || "其他学习") ===
+									section.section,
+							).length
+						: learningPosts.length;
+					return (
+						<a
+							href={url(section.path)}
+							class:list={["learning-section-link", { active: isActive }]}
+							aria-current={isActive ? "page" : undefined}
+						>
+							{section.icon && <Icon name={section.icon} class="size-4" />}
+							<span>{section.label}</span>
+							<span class="learning-section-count">({count})</span>
+						</a>
+					);
+				})
+			}
+		</nav>
+	</section>
+
+	{
+		displayPosts.length > 0 ? (
+			<div class="flex flex-col gap-4">
+				{displayPosts.map((entry, index) => (
+					<PostCard
+						entry={entry}
+						class="onload-animation"
+						style={`--i: ${index}; --interval: 50ms;`}
+					/>
+				))}
+			</div>
+		) : (
+			<section class="card-base rounded-(--radius-large) px-6 py-16 text-center">
+				<Icon
+					name="material-symbols:menu-book-outline-rounded"
+					class="mx-auto mb-4 text-6xl text-(--primary) opacity-45"
+				/>
+				<h2 class="text-xl font-semibold text-80">该分区还没有学习记录</h2>
+			</section>
+		)
+	}
+</MainGridLayout>
+
+<style>
+	.learning-sections {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.learning-section-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		padding: 0.5rem 1rem;
+		border: 1px solid var(--line-divider);
+		border-radius: var(--radius-large);
+		background: var(--btn-regular-bg);
+		color: var(--btn-content);
+		font-size: 0.875rem;
+		font-weight: 500;
+		transition: all 0.2s ease;
+		white-space: nowrap;
+	}
+
+	.learning-section-link:hover:not(.active) {
+		border-color: var(--primary);
+		background: var(--btn-regular-bg-hover);
+	}
+
+	.learning-section-link.active {
+		border-color: var(--primary);
+		background: var(--primary);
+		color: white;
+	}
+
+	.learning-section-count {
+		opacity: 0.6;
+		font-size: 0.8rem;
+	}
+
+	@media (width < 768px) {
+		.learning-sections {
+			gap: 0.375rem;
+		}
+
+		.learning-section-link {
+			padding: 0.4rem 0.8rem;
+			font-size: 0.8rem;
+		}
+
+		.learning-section-count {
+			display: none;
+		}
+	}
+</style>
