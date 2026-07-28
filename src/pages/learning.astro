@@ -34,13 +34,14 @@ const filterTabs = [
 const latestDate = learningPosts.at(0)?.data.published;
 const title = "学习专栏";
 const description = "持续记录每天学到的知识、实践过程与阶段总结。";
+const filterTabsScriptUrl = `${import.meta.env.BASE_URL}js/filter-tabs-handler.js`;
 ---
 
 <MainGridLayout title={title} description={description}>
 	<script>
 		import("../scripts/right-sidebar-layout.js");
 	</script>
-	<script is:inline src="/js/filter-tabs-handler.js"></script>
+	<script is:inline src={filterTabsScriptUrl}></script>
 
 	<section class="card-base mb-4 overflow-hidden rounded-(--radius-large)">
 		<div class="flex items-center justify-between gap-5 px-6 py-6 md:px-9 md:py-7">

@@ -35,7 +35,7 @@
 					var visibleCount = 0;
 
 					items.forEach(function (item) {
-						var itemValue = item.dataset[filterAttr];
+						var itemValue = item.getAttribute("data-" + filterAttr);
 						var match =
 							activeValue === "all" || (itemValue && itemValue.split(",").indexOf(activeValue) !== -1);
 
