@@ -29,6 +29,7 @@ const {
 	wallpaperEnabled = true,
 	postListLayoutEnabled = true,
 } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <script
@@ -45,6 +46,7 @@ const {
 		bannerTitleEnabled,
 		wallpaperEnabled,
 		postListLayoutEnabled,
+		baseUrl,
 	}}
 >
 	function getCarrierNumber(key, fallback) {
@@ -70,8 +72,7 @@ const {
 		}
 
 		const isMobile = window.innerWidth < 1280;
-		const isHomePage =
-			window.location.pathname === "/" || window.location.pathname === "";
+		const isHomePage = window.location.pathname === baseUrl;
 
 		mainContent.classList.remove("mobile-main-no-banner", "no-banner-layout");
 		mainContent.style.removeProperty("min-height");
