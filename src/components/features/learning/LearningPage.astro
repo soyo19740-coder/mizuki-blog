@@ -14,12 +14,18 @@ const LEARNING_CATEGORY = "学习记录";
 const learningPosts = (await getSortedPosts()).filter(
 	(post) => post.data.category?.trim() === LEARNING_CATEGORY,
 );
-const displayPosts = activeSection
+const filteredPosts = activeSection
 	? learningPosts.filter(
 			(post) =>
 				(post.data.learningSection?.trim() || "其他学习") === activeSection,
 		)
 	: learningPosts;
+const displayPosts = [...filteredPosts].sort((a, b) => {
+	if (activeSection !== "GIT学习") return 0;
+	const lessonNumber = (title: string) =>
+		Number.parseInt(title.match(/第\s*(\d+)\s*课/)?.[1] || "0", 10);
+	return lessonNumber(b.data.title) - lessonNumber(a.data.title);
+});
 
 const sections = [
 	{ label: "全部", path: "/learning/", icon: "material-symbols:apps" },
@@ -36,7 +42,11 @@ const title = activeSection || "学习专栏";
 const description = activeSection
 	? sectionDescriptions[activeSection] || "持续记录学习过程与阶段总结。"
 	: "持续记录每天学到的知识、实践过程与阶段总结。";
-const latestDate = displayPosts.at(0)?.data.published;
+const latestDate = displayPosts.length
+	? new Date(
+			Math.max(...displayPosts.map((post) => post.data.published.getTime())),
+		)
+	: undefined;
 ---
 
 <MainGridLayout title={title} description={description}>
