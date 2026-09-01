@@ -18,13 +18,16 @@ const filteredPosts = activeSection
 	? learningPosts.filter(
 			(post) =>
 				(post.data.learningSection?.trim() || "其他学习") === activeSection,
-		)
+		  )
 	: learningPosts;
 const displayPosts = [...filteredPosts].sort((a, b) => {
-	if (activeSection !== "GIT学习") return 0;
+	if (!activeSection) {
+		return b.data.published.getTime() - a.data.published.getTime();
+	}
 	const lessonNumber = (title: string) =>
-		Number.parseInt(title.match(/第\s*(\d+)\s*课/)?.[1] || "0", 10);
-	return lessonNumber(b.data.title) - lessonNumber(a.data.title);
+		Number.parseInt(title.match(/第\s*(\d+)\s*[课节]/)?.[1] || "0", 10);
+	const lessonDiff = lessonNumber(b.data.title) - lessonNumber(a.data.title);
+	return lessonDiff || b.data.published.getTime() - a.data.published.getTime();
 });
 
 const sections = [
