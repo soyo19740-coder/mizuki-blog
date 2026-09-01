@@ -25,7 +25,30 @@ const displayPosts = [...filteredPosts].sort((a, b) => {
 		return b.data.published.getTime() - a.data.published.getTime();
 	}
 	const lessonNumber = (title: string) =>
-		Number.parseInt(title.match(/第\s*(\d+)\s*[课节]/)?.[1] || "0", 10);
+		(() => {
+			const match = title.match(/第\s*([0-9]+|[一二三四五六七八九十百千]+)\s*[课节]/);
+			if (!match) return 0;
+			if (/^\d+$/.test(match[1])) return Number.parseInt(match[1], 10);
+			const digits: Record<string, number> = {
+				一: 1,
+				二: 2,
+				三: 3,
+				四: 4,
+				五: 5,
+				六: 6,
+				七: 7,
+				八: 8,
+				九: 9,
+			};
+			if (match[1] === "十") return 10;
+			if (match[1].startsWith("十")) return 10 + (digits[match[1][1]] || 0);
+			if (match[1].endsWith("十")) return (digits[match[1][0]] || 0) * 10;
+			if (match[1].includes("十")) {
+				const [tens, ones] = match[1].split("十");
+				return (digits[tens] || 0) * 10 + (digits[ones] || 0);
+			}
+			return digits[match[1]] || 0;
+		})();
 	const lessonDiff = lessonNumber(b.data.title) - lessonNumber(a.data.title);
 	return lessonDiff || b.data.published.getTime() - a.data.published.getTime();
 });
@@ -34,11 +57,13 @@ const sections = [
 	{ label: "全部", path: "/learning/", icon: "material-symbols:apps" },
 	{ label: "LINUX学习", path: "/learning/linux/", section: "LINUX学习" },
 	{ label: "GIT学习", path: "/learning/git/", section: "GIT学习" },
+	{ label: "电路设计", path: "/learning/circuit/", section: "电路设计" },
 	{ label: "其他学习", path: "/learning/other/", section: "其他学习" },
 ];
 const sectionDescriptions: Record<string, string> = {
 	LINUX学习: "记录 Linux、WSL、命令行与开发环境的学习过程。",
 	GIT学习: "记录 Git、Gerrit 与版本控制的学习过程。",
+	电路设计: "记录电路基础、元件特性、滤波器与硬件设计学习过程。",
 	其他学习: "记录其他方向的知识、实践过程与阶段总结。",
 };
 const title = activeSection || "学习专栏";
