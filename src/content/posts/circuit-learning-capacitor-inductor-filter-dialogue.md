@@ -4,8 +4,7 @@ published: 2026-09-02T18:32:08+08:00
 description: 整理 RC、LC 滤波、直流稳态、-3 dB、LC 谐振与谐振峰控制等电路设计要点。
 image: ''
 tags: [电路设计, 电容, 电感, RC滤波器, LC滤波器, 谐振]
-category: 学习记录
-learningSection: 电路设计
+category: 硬件笔记
 draft: false
 pinned: false
 comment: true
