@@ -4,7 +4,8 @@ published: 2026-09-15T10:09:18+08:00
 description: 学习 LDO 稳压器的工作原理、压差、功耗、热设计、稳定性和 PCB 布局要点。
 image: ''
 tags: [硬件设计, 电源设计, LDO, 稳压电源, 热设计, PCB]
-category: 硬件笔记
+category: 学习记录
+learningSection: 电路设计
 draft: false
 pinned: false
 comment: true

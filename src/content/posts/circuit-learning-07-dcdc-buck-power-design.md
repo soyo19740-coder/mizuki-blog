@@ -4,7 +4,8 @@ published: 2026-09-14T19:52:58+08:00
 description: 学习 DC-DC Buck 降压电源的工作原理、占空比、电感电容选型、纹波与 PCB 布局基础。
 image: ''
 tags: [硬件设计, 电源设计, DC-DC, Buck, 降压电源, PCB]
-category: 硬件笔记
+category: 学习记录
+learningSection: 电路设计
 draft: false
 pinned: false
 comment: true
